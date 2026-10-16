@@ -139,7 +139,7 @@
 
 
 
-------------
+
 #!/usr/bin/env bash
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
@@ -160,10 +160,10 @@ EOF
 
 # --- Use Ubuntu's mirror auto-selector ---
 sudo tee /etc/apt/sources.list >/dev/null <<'EOF'
-deb mirror://mirrors.ubuntu.com/mirrors.txt jammy main restricted universe multiverse
-deb mirror://mirrors.ubuntu.com/mirrors.txt jammy-updates main restricted universe multiverse
-deb mirror://mirrors.ubuntu.com/mirrors.txt jammy-backports main restricted universe multiverse
-deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main restricted universe multiverse
+deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-updates main restricted universe multiverse
+deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-backports main restricted universe multiverse
+deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-security main restricted universe multiverse
 EOF
 
 sudo apt-get clean
@@ -270,7 +270,7 @@ for i in 1 2; do
     --net ansible-net --ip "$cip" \
     --privileged --restart=always \
     -v "worker_${i}_ssh:/root/.ssh" \
-    deenamanick/ansible-ssh:22.04
+    arm64-ssh-worker:22.04
 
   # Inject authorized_keys without restarting host sshd
   echo "$pubkey" | docker exec -i "$cname" bash -lc '
